@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww13580\viewh16380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 # My Project\
+\
+This README file describes the main MATLAB files contained in this folder, which includes five functions and one main file for running a simulation.\
+\
+\'97\'97\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 ## Additional Information\
+\
+### Results and Data Folders\
+- Example results are in the "All Results" folder, but those can be created by any user.\
+- The pricing data for each zone and emission data for each state are in the "All Data" folder. Note that those must be moved into the main folder for the MAINFILE.m to work.\
+- The 2022 emission data is for CA and NY (state-wide) This is in the form of .csv files.\
+- The 2022 pricing data is specific for each node. This is in the form of .mat files.\
+- There is a file adjusted for CO2 and a file unadjusted for CO2 for each location/zone/node.\
+\
+- PLEASE NOTE: These \'93adjusted\'94 .mat files were created with the pi_co2 = 40 in mind. To change this, please refer to the file "making_matfiles.m" within "All Data." This file helps with converting CSV columns to (288 x number of days) matrices (.mat files).\
+\
+\'97\'97\
+\
+## MAINFILE.m\
+- Usage: Execute this file when you want to perform a simulation.\
+- Input Parameters: All parameters should be defined at the top of this file. They will be carried over into the other functions.\
+- Line 73: Type the input data pricing file here.\
+- User Input: When prompted, provide the state abbreviation to load state-wide emission data.\
+\
+## Function Files\
+\
+You shouldn\'92t have to modify any of the following files, but here's an explanation of what they do. The files are also commented within the code itself for more details.\
+\
+### SingleLambdaOptimizer.m\
+- Function Signature: [best_lambda_opt, best_prof] = SingleLambdaOptimizer(price_data, X, k, parameters)\
+- Purpose: This function optimizes the lambda value over the entire data range.\
+- Lambda Guess Loop:\
+  - Iterates from 0 to 60, using each integer as an initial guess for lambda.\
+  - Inside the loop, the fminsearch function is used to perform optimization with respect to the given lambda guess.\
+  - If a better result is found, best_prof and best_lambda_opt are updated.\
+- Calculate Unadjusted Profit: Once the best lambda has been found, the unadjusted profit is calculated using the DAC_foropt function and the boost is subtracted.\
+- Outputs:\
+  - best_lambda_opt: The optimized lambda value.\
+  - best_prof: The corresponding profit.\
+\
+### LambdaOptimizer.m\
+- Function Signature: [lambda_opts, profits] = LambdaOptimizer(price_data, increment, look_ahead, X, k, parameters)\
+- Purpose: This function optimizes the lambda values each "chunk" (often 1 day but can vary) of the price data, taking into account a look-ahead parameter.\
+- Calculate Chunks: Determines how many chunks there are in the price data based on the increment, rounding up the last chunk if necessary.\
+- Chunk Loop:\
+  - Iterates through each chunk of the price data.\
+  - Calculates the start and end indices for the price data to optimize, including the look-ahead.\
+  - Extracts the relevant price data for optimization.\
+  - Calls the SingleLambdaOptimizer function to optimize the lambda value for the current chunk.\
+  - Stores the optimized lambda value.\
+  - Recalculates the start and end indices for the price data, excluding the look-ahead.\
+  - Uses the optimized lambda value to run a simulation and find the initial X and k values for the next chunk.\
+  - Stores the profit for the current chunk.\
+- Outputs:\
+  - lambda_opts: Cell array containing the optimized lambda values for each chunk.\
+  - profits: Cell array containing the profits corresponding to each chunk.\
+\
+### DAC Functions\
+- DAC_foropt.m: Only DAC function used for optimization. Almost identical to the others but with different inputs/outputs to save computation time.\
+- DAC_foriteration.m: Provides X, k, and PROFIT for each chunk to set initial conditions for the next chunk.\
+- DAC_fordata.m: Used for compiling results to be printed to a CSV in MAINFILE.m.\
+\
+## Other Notes\
+- Chunk: Each "chunk" represents a portion of the data processed separately, with its own optimized lambda.\
+- Number of Lambdas: Equal to the number of chunks.\
+- Example Calculation:\
+  - 365 days, new lambda every 12 hrs, 24 hr look ahead\
+  - increment = 144\
+  - look_ahead = 288\
+  - number of lambdas (aka. number of chunks) = 365 * 2 = 730\
+  - yields $36,323.63\
+\
+For more detailed information, please refer to the comments within each file or contact edentze1@swarthmore.edu (after May 2024, edentzer@outlook.com)\
+}
