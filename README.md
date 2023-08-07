@@ -7,3 +7,8 @@ The main code (current updated to V1.0) is developed in Julia. Testing pricing d
 (dac_test.jl is the develping code for testing minor improvements)
 
 Please refer to "DAC_formulation_20230531.pdf" for details of the mathematical formulation of the optimization.
+
+Log:
+2023-06-14
+updated V1.1 with small modification on the formulations.
+Will run the comparison between Julia-Gurobi optimization results with the MATLAB threshold-searching results.

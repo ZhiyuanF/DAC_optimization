@@ -53,12 +53,18 @@ look_ahead = 288; % determines the # of additional time steps considered beyond 
 if strcmpi(user_input1, 'NY')
          
     % Load emissions data from CSV
-    myISO = readtable('NYISO_full_filtered_emission.csv');
+    folderPath = '.\data';
+    fileName = 'NYISO_full_filtered_emission.csv';
+    fullFilePath = fullfile(folderPath, fileName);
+    myISO = readtable(fullFilePath);
     co2_data = transpose(myISO{1:duration, 11}); % Extract CO2 emissions from the 11th column  
     
 elseif strcmpi(user_input1, 'CA')
     
     % Load emissions data from CSV
+    folderPath = '.\data';
+    fileName = 'CAISO_full_filtered_emission.csv';
+    fullFilePath = fullfile(folderPath, fileName);
     myISO = readtable('CAISO_full_filtered_emission.csv');
     co2_data = transpose(myISO{2:duration+1, 11});  % Extract CO2 emissions from the 11th column  
     
@@ -70,7 +76,7 @@ end
 
 % load the pricing data from the input .mat file (adjusted or unadjusted in
 % the title)
-input_mat_file = 'WNSTRGN1_unadjusted.mat';
+input_mat_file = '.\data\WNSTRGN1_unadjusted.mat';
 fileln = load(input_mat_file);
 myRTP = fileln.RTP;
 price_data = myRTP(start_step:start_step+duration-1); % Load prices for the specified time chunk
