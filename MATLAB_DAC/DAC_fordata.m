@@ -1,6 +1,7 @@
 function [results] = DAC_fordata(price_cap, price_data, X, k, parameters)
 
     % Fixed parameters
+    X_hat = parameters(1,1); % Paying S dollar per each cycle for material/operation cost
     S = parameters(1,2); % Paying S dollar per each cycle for material/operation cost
     pi_co2 = parameters(1,3); % Selling co2 at pi_co2 per ton, incentive
     P_a = parameters(1,6); % Correction of absorption power consumption by the installed capacity
@@ -19,13 +20,13 @@ function [results] = DAC_fordata(price_cap, price_data, X, k, parameters)
             v = false;
             z = false;
 
-        elseif X > 0.8 %if saturation is high, desorb
+        elseif X > 0.8*X_hat %if saturation is high, desorb
             u = false;
             v = true;
             z = false;
             k = false;
 
-        elseif X < 0.05 %if saturation is low, adsorb
+        elseif X < 0.05*X_hat %if saturation is low, adsorb
 
             % check if most recently desorbing,
             % and if so, indicate a new cycle has begun
