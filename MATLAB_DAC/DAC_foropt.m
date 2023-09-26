@@ -1,5 +1,6 @@
 function [PROFIT, boost] = DAC_foropt(price_cap, price_data, X, k, parameters)
 
+
     % Fixed parameters
     X_hat = parameters(1,1); % Paying S dollar per each cycle for material/operation cost
     S = parameters(1,2); % Paying S dollar per each cycle for material/operation cost
