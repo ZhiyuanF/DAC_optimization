@@ -14,6 +14,7 @@ function [X, k, PROFIT] = DAC_foriteration(price_cap, price_data, X, k, paramete
 
     % Initialize variables
     PROFIT = 0;
+    %price_cap = 100000000000;
 
     for t = 1:numel(price_data)
         if price_data(t) > price_cap  %if price is higher than lambda, idle

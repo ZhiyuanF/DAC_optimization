@@ -13,6 +13,7 @@ function [results] = DAC_fordata(price_cap, price_data, X, k, parameters)
 
     % Initialize variables
     results = cell(numel(price_data),9);
+    %price_cap = 100000000000;
 
     for t = 1:numel(price_data)
         if price_data(t) > price_cap %if price is higher than lambda, idle
