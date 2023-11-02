@@ -8,7 +8,12 @@ function [best_lambda_opt, best_prof] = SingleLambdaOptimizer(price_data, X, k, 
     best_lambda_opt = 0; % initialize with zero
     counter = 0; % initialize with zero
     
-    for lambda_guess = -10:1:60
+    series = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12, 14, 16,...
+        18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50,...
+        50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200,...
+        250, 300, 350, 400, 450, 500];
+    
+    for lambda_guess = series
                 
         % perform optimization using fminsearch
         [lambda_opt, fake_profit] = fminsearch(objectiveFunc, lambda_guess);
