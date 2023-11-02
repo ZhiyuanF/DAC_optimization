@@ -28,21 +28,20 @@ for idx = 1:length(pi_co2_values)
        pi_co2 = pi_co2_values(idx);
        disp(['Starting iteration for pi_co2 = ', num2str(pi_co2)]);  % Debugging statement
 
-       %Parameters
-        X_hat = 1;
-        S = 115.6*X_hat;
-        P_a_unit = 0.0642;
-        P_d_unit = 0.02425;
-        P_a = P_a_unit*X_hat;
-        P_d = P_d_unit*X_hat;
-        beta_a_1 = 0.2*X_hat;
-        beta_a_2 = -0.2;
-        beta_d_1 = 0.0*X_hat;
-        beta_d_2 = 0.4;
-
+        %Parameters
+        X_hat = 0.66;
         increment = 288;
         look_ahead = 288;
-
+        S = 42.02*X_hat;
+        P_a_unit = 0.011321;
+        P_d_unit = 0.034286;
+        P_a = P_a_unit*X_hat;
+        P_d = P_d_unit*X_hat;
+        beta_a_1 = 0.037736*X_hat;
+        beta_a_2 = 0;
+        beta_d_1 = 0;
+        beta_d_2 = 2;
+        
         parameters = [X_hat, S, pi_co2, P_a_unit, P_d_unit, P_a, P_d, beta_a_1, beta_a_2, beta_d_1, beta_d_2];
 
         %% Choose Increment and Look Ahead
@@ -209,7 +208,7 @@ end
 results_array(:, 1) = pi_co2_values;
 
 % write to csv
-writematrix(results_array, 'sensitivity_Extended_adjusted_caiso.csv');
+writematrix(results_array, 'filename.csv');
 
 %end
 toc
