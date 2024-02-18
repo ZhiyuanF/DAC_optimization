@@ -17,7 +17,7 @@ Zone = "NYC" # price zone name
 
 # read price
 # fileln = matopen(string("./Compare_deg_model/RTP_",Zone,"_2010_2019.mat"))
-fileln = matopen(string("./Compare_deg_model/RTP_",Zone,"_2010_2019.mat"))
+fileln = matopen(string("./RTP_",Zone,"_2010_2019.mat"))
 RTP = read(fileln, "RTP")
 close(fileln)
 # This section loaded the price data in NYC from 2010-2019
